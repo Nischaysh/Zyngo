@@ -68,7 +68,28 @@ class ProfileFragment : Fragment() {
         menuButton = view.findViewById(R.id.menuButton)
 
         // Set default profile image
-        profileImage.setImageResource(R.drawable.ic_default_user)
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+        val currentUser = auth.currentUser
+        currentUser?.let { user ->
+            db.collection("users")
+                .document(user.uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val gender = document.getString("gender")
+                        if(gender == "Male"){
+                            binding.profileImage.setImageResource(R.drawable.man)
+                        }else{
+                            binding.profileImage.setImageResource(R.drawable.woman)
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    showMessage("Error loading profile data: ${e.message}")
+                }
+        }
+        profileImage.setImageResource(R.drawable.man)
 
         // Fetch user data including profile image
         fetchUserData()

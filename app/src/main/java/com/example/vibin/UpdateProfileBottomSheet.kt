@@ -55,6 +55,14 @@ class UpdateProfileBottomSheet : BottomSheetDialogFragment() {
                         binding.usernameEditText.setText(document.getString("username"))
                         binding.nameEditText.setText(document.getString("firstName"))
                         binding.bioEditText.setText(document.getString("bio"))
+                        val gender = document.getString("gender")
+                        if(gender == "Male"){
+                            binding.genderimg.visibility = View.VISIBLE
+                            binding.genderimg.setImageResource(R.drawable.man)
+                        }else{
+                            binding.genderimg.visibility = View.VISIBLE
+                            binding.genderimg.setImageResource(R.drawable.woman)
+                        }
                     }
                 }
                 .addOnFailureListener { e ->
