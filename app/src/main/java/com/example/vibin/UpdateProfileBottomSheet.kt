@@ -16,6 +16,8 @@ class UpdateProfileBottomSheet : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    override fun getTheme(): Int = R.style.TransparentBottomSheetDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
