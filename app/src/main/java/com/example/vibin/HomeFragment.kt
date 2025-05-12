@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.vibin.databinding.FragmentHomeBinding
 import com.example.vibin.databinding.FragmentProfileBinding
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var profileImage: ShapeableImageView
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = FirebaseAuth.getInstance()
@@ -40,11 +42,69 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        profileImage = view.findViewById(R.id.profileicon)
+        setupViews()
+        setupRecyclerView()
+        fetchUserData()
+        fetchAllUsers()
 
-        // Set default profile image
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        binding.HideText.setOnClickListener {
+            if (binding.HideText.text == "Show"){
+            binding.userRecycleview.visibility = View.VISIBLE
+            binding.HideText.text = "Hide"
+            }else{
+                binding.userRecycleview.visibility = View.GONE
+                binding.HideText.text = "Show"
+            }
+        }
+    }
+
+    private fun setupViews() {
+        profileImage = binding.profileicon
+    }
+
+    private fun setupRecyclerView() {
+        binding.userRecycleview.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            userAdapter = UserAdapter(emptyList())
+            adapter = userAdapter
+        }
+    }
+
+    private fun fetchAllUsers() {
+        showMessage("Fetching users...")
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { documents ->
+                showMessage("Got ${documents.size()} documents")
+                val userList = documents.mapNotNull { document ->
+                    val username = document.getString("firstName")
+                    val profileImageUrl = document.getString("profileImageUrl")
+                    showMessage("User: $username, Image URL: $profileImageUrl")
+                    
+                    if (profileImageUrl.isNullOrEmpty()) {
+                        showMessage("Warning: Empty profile image URL for user $username")
+                    }
+                    
+                    User(
+                        uid = document.id,
+                        name = username ?: "",
+                        profileImageUrl = profileImageUrl ?: ""
+                    )
+                }
+                if (userList.isEmpty()) {
+                    showMessage("No users found in the list")
+                } else {
+                    showMessage("Found ${userList.size} users")
+                    userAdapter = UserAdapter(userList)
+                    binding.userRecycleview.adapter = userAdapter
+                }
+            }
+            .addOnFailureListener { e ->
+                showMessage("Error fetching users: ${e.message}")
+            }
+    }
+
+    private fun fetchUserData() {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
             db.collection("users")
@@ -58,27 +118,8 @@ class HomeFragment : Fragment() {
                         }else{
                             binding.profileicon.setImageResource(R.drawable.woman)
                         }
-                    }
-                }
-                .addOnFailureListener { e ->
-                    showMessage("Error loading profile data: ${e.message}")
-                }
-        }
-        profileImage.setImageResource(R.drawable.man)
-        fetchUserData()
-
-    }
-
-    private fun fetchUserData() {
-        val currentUser = auth.currentUser
-        currentUser?.let { user ->
-            db.collection("users")
-                .document(user.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
+                        
                         val profileImageUrl = document.getString("profileImageUrl")
-                        // Load profile image if URL exists
                         profileImageUrl?.let { url ->
                             loadProfileImage(url)
                         }
@@ -107,4 +148,8 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
