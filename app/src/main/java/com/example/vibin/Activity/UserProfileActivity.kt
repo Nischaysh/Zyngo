@@ -1,9 +1,9 @@
-package com.example.vibin
+package com.example.vibin.Activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.example.vibin.R
 import com.example.vibin.databinding.ActivityUserProfileBinding
 import com.google.firebase.firestore.FirebaseFirestore
 

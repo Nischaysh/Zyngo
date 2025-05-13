@@ -1,21 +1,20 @@
-package com.example.vibin
+package com.example.vibin.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.vibin.R
+import com.example.vibin.User
+import com.example.vibin.Adapter.UserAdapter
 import com.example.vibin.databinding.FragmentHomeBinding
-import com.example.vibin.databinding.FragmentProfileBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 
 class HomeFragment : Fragment() {
 
@@ -80,11 +79,11 @@ class HomeFragment : Fragment() {
                     val username = document.getString("firstName")
                     val profileImageUrl = document.getString("profileImageUrl")
                     showMessage("User: $username, Image URL: $profileImageUrl")
-                    
+
                     if (profileImageUrl.isNullOrEmpty()) {
                         showMessage("Warning: Empty profile image URL for user $username")
                     }
-                    
+
                     User(
                         uid = document.id,
                         name = username ?: "",
@@ -118,7 +117,7 @@ class HomeFragment : Fragment() {
                         }else{
                             binding.profileicon.setImageResource(R.drawable.woman)
                         }
-                        
+
                         val profileImageUrl = document.getString("profileImageUrl")
                         profileImageUrl?.let { url ->
                             loadProfileImage(url)

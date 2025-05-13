@@ -1,14 +1,14 @@
-package com.example.vibin
+package com.example.vibin.Activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.vibin.databinding.ActivitySigninBinding
+import com.example.vibin.R
+import com.example.vibin.Activity.SigninActivity
 import com.example.vibin.databinding.ActivitySplashBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

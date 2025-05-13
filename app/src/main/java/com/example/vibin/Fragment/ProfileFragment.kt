@@ -1,4 +1,4 @@
-package com.example.vibin
+package com.example.vibin.Fragment
 
 import android.app.Activity
 import android.content.Intent
@@ -8,20 +8,21 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import android.widget.Button
 import android.widget.ImageButton
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.example.vibin.Activity.SigninActivity
+import com.example.vibin.R
+import com.example.vibin.UpdateProfileBottomSheet
 import com.example.vibin.databinding.FragmentProfileBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.bumptech.glide.Glide
 
 class ProfileFragment : Fragment() {
 

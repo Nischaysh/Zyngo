@@ -1,13 +1,13 @@
-package com.example.vibin
+package com.example.vibin.Activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.vibin.Activity.MainActivity
+import com.example.vibin.R
 import com.example.vibin.databinding.ActivityDetailsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -74,7 +74,7 @@ class DetailsActivity : AppCompatActivity() {
                     .update(userData as Map<String, Any>)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-                        startActivity(android.content.Intent(this, MainActivity::class.java))
+                        startActivity(Intent(this, MainActivity::class.java))
                         finish()
                     }
                     .addOnFailureListener { e ->

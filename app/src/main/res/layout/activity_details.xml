@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:padding="24dp"
-    tools:context=".DetailsActivity">
+    tools:context=".Activity.DetailsActivity">
     <LinearLayout
         android:id="@+id/Loadingscreen"
         android:layout_width="match_parent"

@@ -1,7 +1,8 @@
-package com.example.vibin
+package com.example.vibin.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.vibin.R
 import com.example.vibin.databinding.ActivitySigninBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -65,7 +67,7 @@ class SigninActivity : AppCompatActivity() {
             }
         } else if (password.length < 6) {
             passwordLayout.error = "Password must be at least 6 characters"
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailLayout.error = "Invalid format"
         } else {
             // Try to sign in
@@ -109,7 +111,12 @@ class SigninActivity : AppCompatActivity() {
                                             .set(userData)
                                             .addOnSuccessListener {
                                                 Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
-                                                startActivity(Intent(this, DetailsActivity::class.java))
+                                                startActivity(
+                                                    Intent(
+                                                        this,
+                                                        DetailsActivity::class.java
+                                                    )
+                                                )
                                                 finish()
                                             }
                                             .addOnFailureListener {
