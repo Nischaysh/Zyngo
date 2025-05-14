@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialogRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:backgroundTint="?attr/colorPrimaryVariant"
+    android:background="@drawable/dialog_background">
+
+    <TextView
+        android:id="@+id/dialogMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your message here"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ButtonNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+            app:cornerRadius="24dp"
+            android:layout_marginEnd="8dp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ButtonYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+            app:cornerRadius="24dp"
+            android:layout_marginEnd="8dp" />
+    </LinearLayout>
+</LinearLayout>

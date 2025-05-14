@@ -35,7 +35,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="end"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu"
+                android:src="@drawable/ic_logout"
                 android:padding="12dp"
                 app:tint="@color/text_primary" />
 
