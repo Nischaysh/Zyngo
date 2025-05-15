@@ -44,7 +44,6 @@ class UserProfileActivity : AppCompatActivity() {
                     val bio = document.getString("bio") ?: ""
                     val followers = document.getLong("followers") ?: 0L
                     val following = document.getLong("following") ?: 0L
-                    val gallery = document.get("gallery") as? List<String> ?: emptyList()
 
                     // Set profile image
                     Glide.with(this)
@@ -55,6 +54,7 @@ class UserProfileActivity : AppCompatActivity() {
                         .into(binding.profileImage)
 
                     // Set handle
+                    binding.userfullname.text = firstName+" "+lastName
                     binding.userHandle.text = "@$username"
                     // Set bio
                     binding.userBio.text = bio

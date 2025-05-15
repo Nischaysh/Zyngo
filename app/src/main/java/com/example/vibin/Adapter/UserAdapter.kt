@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.UserProfileActivity
 import com.example.vibin.R
-import com.example.vibin.User
+import com.example.vibin.Adapter.User
 import com.example.vibin.databinding.ItemUserBinding
 
 class UserAdapter(private val users: List<User>) :
@@ -18,10 +18,11 @@ class UserAdapter(private val users: List<User>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(user: User) {
-            binding.userName.text = user.name
+            binding.userName.text = "@"+user.username
+            binding.firstName.text = user.firstname
 
             // Log the image URL we're trying to load
-            Log.d("UserAdapter", "Loading image for user ${user.name}: ${user.profileImageUrl}")
+            Log.d("UserAdapter", "Loading image for user ${user.username}: ${user.profileImageUrl}")
 
             // Load profile image using Glide
             Glide.with(binding.root.context)

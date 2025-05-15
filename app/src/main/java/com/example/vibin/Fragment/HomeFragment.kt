@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.vibin.R
-import com.example.vibin.User
+import com.example.vibin.Adapter.User
 import com.example.vibin.Adapter.UserAdapter
 import com.example.vibin.databinding.FragmentHomeBinding
 import com.google.android.material.imageview.ShapeableImageView
@@ -76,7 +76,8 @@ class HomeFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 showMessage("Got ${documents.size()} documents")
                 val userList = documents.mapNotNull { document ->
-                    val username = document.getString("firstName")
+                    val username = document.getString("username")
+                    val firstname = document.getString("firstName")
                     val profileImageUrl = document.getString("profileImageUrl")
                     showMessage("User: $username, Image URL: $profileImageUrl")
 
@@ -86,7 +87,8 @@ class HomeFragment : Fragment() {
 
                     User(
                         uid = document.id,
-                        name = username ?: "",
+                        username = username ?: "",
+                        firstname = firstname ?: "",
                         profileImageUrl = profileImageUrl ?: ""
                     )
                 }
