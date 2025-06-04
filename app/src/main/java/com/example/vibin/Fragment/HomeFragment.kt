@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.vibin.R
 import com.example.vibin.Adapter.User
 import com.example.vibin.Adapter.UserAdapter
+import com.example.vibin.BottomSheet.NotificationBottomSheet
 import com.example.vibin.databinding.FragmentHomeBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
@@ -54,6 +55,11 @@ class HomeFragment : Fragment() {
                 binding.userRecycleview.visibility = View.GONE
                 binding.HideText.text = "Show"
             }
+        }
+
+        binding.NotificationButton.setOnClickListener {
+            val bottomsheet = NotificationBottomSheet()
+            bottomsheet.show(parentFragmentManager,bottomsheet.tag)
         }
     }
 

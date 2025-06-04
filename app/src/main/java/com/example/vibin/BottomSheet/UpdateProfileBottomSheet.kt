@@ -1,14 +1,15 @@
-package com.example.vibin
+package com.example.vibin.BottomSheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.vibin.R
+import com.example.vibin.databinding.UpdateProfileBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.android.material.snackbar.Snackbar
-import com.example.vibin.databinding.UpdateProfileBottomSheetBinding
 
 class UpdateProfileBottomSheet : BottomSheetDialogFragment() {
 

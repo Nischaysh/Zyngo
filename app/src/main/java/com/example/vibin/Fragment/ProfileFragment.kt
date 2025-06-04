@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.SigninActivity
 import com.example.vibin.R
-import com.example.vibin.UpdateProfileBottomSheet
+import com.example.vibin.BottomSheet.UpdateProfileBottomSheet
 import com.example.vibin.databinding.FragmentProfileBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
