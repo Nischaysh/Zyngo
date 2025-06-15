@@ -1,5 +1,6 @@
 package com.example.vibin.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,11 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.vibin.Activity.CreatePostActivity
+import com.example.vibin.Adapter.PostAdapter
 import com.example.vibin.R
-import com.example.vibin.Adapter.User
+import com.example.vibin.models.User
 import com.example.vibin.Adapter.UserAdapter
 import com.example.vibin.BottomSheet.NotificationBottomSheet
 import com.example.vibin.databinding.FragmentHomeBinding
+import com.example.vibin.models.Post
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +29,7 @@ class HomeFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var userAdapter: UserAdapter
+    private lateinit var postAdapter: PostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = FirebaseAuth.getInstance()
@@ -46,6 +51,13 @@ class HomeFragment : Fragment() {
         setupRecyclerView()
         fetchUserData()
         fetchAllUsers()
+        binding.postRecycleview.layoutManager = LinearLayoutManager(requireContext()) // or requireContext() if in Fragment
+        fetchAllPosts()
+
+
+        binding.btnpicimage.setOnClickListener {
+                startActivity(Intent(requireContext(), CreatePostActivity::class.java))
+        }
 
         binding.HideText.setOnClickListener {
             if (binding.HideText.text == "Show"){
@@ -85,7 +97,6 @@ class HomeFragment : Fragment() {
                     val username = document.getString("username")
                     val firstname = document.getString("firstName")
                     val profileImageUrl = document.getString("profileImageUrl")
-                    showMessage("User: $username, Image URL: $profileImageUrl")
 
                     if (profileImageUrl.isNullOrEmpty()) {
                         showMessage("Warning: Empty profile image URL for user $username")
@@ -108,6 +119,34 @@ class HomeFragment : Fragment() {
             }
             .addOnFailureListener { e ->
                 showMessage("Error fetching users: ${e.message}")
+            }
+    }
+    private fun fetchAllPosts() {
+        db.collection("posts")
+            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { documents ->
+                val postList = documents.mapNotNull { document ->
+                    val userName = document.getString("userName")
+                    val text = document.getString("text")
+                    val userId = document.getString("userId")
+                    val imageUrl = document.getString("imageUrl")
+                    Post(
+                        userId =  userId ?: "",
+                        text = text ?: "",
+                        userName = userName ?: "",
+                        imageUrl = imageUrl ?: ""
+                    )
+                }
+                if (postList.isEmpty()) {
+                    showMessage("No post found in the list")
+                } else {
+                    postAdapter = PostAdapter(postList)
+                    binding.postRecycleview.adapter = postAdapter
+                }
+            }
+            .addOnFailureListener { e ->
+                showMessage("Error fetching post: ${e.message}")
             }
     }
 

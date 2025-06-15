@@ -28,4 +28,12 @@
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
+    <style name="UcropFixTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:statusBarColor">#6200EE</item> <!-- Use your toolbar color -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+
 </resources>

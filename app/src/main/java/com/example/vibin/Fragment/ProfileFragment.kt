@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -17,8 +18,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.SigninActivity
-import com.example.vibin.R
 import com.example.vibin.BottomSheet.UpdateProfileBottomSheet
+import com.example.vibin.R
 import com.example.vibin.databinding.FragmentProfileBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
@@ -26,6 +27,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.yalantis.ucrop.UCrop
+import java.io.File
 
 class ProfileFragment : Fragment() {
 
@@ -43,7 +46,7 @@ class ProfileFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val selectedImageUri: Uri? = result.data?.data
             selectedImageUri?.let { uri ->
-                uploadImageToFirebase(uri)
+                launchCropper(uri) // 🔍 Launch cropper instead of direct upload
             }
         }
     }
@@ -71,41 +74,14 @@ class ProfileFragment : Fragment() {
         editProfileImageButton = view.findViewById(R.id.editProfileImageButton)
         menuButton = view.findViewById(R.id.menuButton)
 
-        // Set default profile image
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let { user ->
-            db.collection("users")
-                .document(user.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        val gender = document.getString("gender")
-                        if(gender == "Male"){
-                            binding.profileImage.setImageResource(R.drawable.man)
-                        }else{
-                            binding.profileImage.setImageResource(R.drawable.woman)
-                        }
-                    }
-                }
-                .addOnFailureListener { e ->
-                    showMessage("Error loading profile data: ${e.message}")
-                }
-        }
-        profileImage.setImageResource(R.drawable.man)
-
-        // Fetch user data including profile image
         fetchUserData()
 
-        // Set up click listener for edit profile image button
         editProfileImageButton.setOnClickListener {
             showCustomDialog("Wanna upload profile pic?") {
                 openGallery()
             }
         }
 
-        // Set up menu button click listener
         menuButton.setOnClickListener { view ->
             showPopupMenu(view)
         }
@@ -122,26 +98,56 @@ class ProfileFragment : Fragment() {
         getContent.launch(intent)
     }
 
+    // 🔍 Launch uCrop for circular cropping
+    private fun launchCropper(sourceUri: Uri) {
+        val destinationUri = Uri.fromFile(
+            File(requireContext().cacheDir, "cropped_${System.currentTimeMillis()}.jpg")
+        )
+
+        val options = UCrop.Options().apply {
+            setCompressionQuality(80)
+            setCircleDimmedLayer(true)
+            setShowCropFrame(false)
+            setShowCropGrid(false)
+            setHideBottomControls(true)
+            setFreeStyleCropEnabled(false)
+            requireActivity().setTheme(R.style.UcropFixTheme)
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+
+        UCrop.of(sourceUri, destinationUri)
+            .withAspectRatio(1f, 1f)
+            .withOptions(options)
+            .start(requireContext(), this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == Activity.RESULT_OK) {
+            val resultUri = UCrop.getOutput(data!!)
+            resultUri?.let { uploadImageToFirebase(it) }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(data!!)
+            showMessage("Crop error: ${cropError?.message}")
+        }
+    }
+
     private fun uploadImageToFirebase(imageUri: Uri) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
-            // Show loading state
             showMessage("Uploading image...")
 
-            // Create a reference to the image in Firebase Storage
             val imageRef = storageRef.child("profile_images/${user.uid}.jpg")
 
-            // Upload the image
             imageRef.putFile(imageUri)
-                .addOnSuccessListener { taskSnapshot ->
-                    // Get the download URL
+                .addOnSuccessListener {
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Update Firestore with the image URL
                         db.collection("users")
                             .document(user.uid)
                             .update("profileImageUrl", uri.toString())
                             .addOnSuccessListener {
-                                // Update the profile image in the UI
                                 loadProfileImage(uri.toString())
                                 showMessage("Profile image updated successfully")
                             }
@@ -180,17 +186,13 @@ class ProfileFragment : Fragment() {
                         val followerCount = document.getLong("followerCount") ?: 0L
                         val profileImageUrl = document.getString("profileImageUrl")
 
-                        // Update UI with the retrieved data
                         binding.toolbarUsername.text = username ?: "Username not set"
                         binding.nameText.text = firstName ?: "Name not set"
                         binding.followingCount.text = followingCount.toString()
                         binding.followersCount.text = followerCount.toString()
                         binding.bioText.text = bio
 
-                        // Load profile image if URL exists
-                        profileImageUrl?.let { url ->
-                            loadProfileImage(url)
-                        }
+                        profileImageUrl?.let { url -> loadProfileImage(url) }
                     } else {
                         showMessage("User data not found")
                     }
@@ -208,20 +210,16 @@ class ProfileFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_account -> {
-                    // Show update profile bottom sheet
                     val bottomSheet = UpdateProfileBottomSheet()
                     bottomSheet.show(childFragmentManager, "UpdateProfileBottomSheet")
                     true
                 }
                 R.id.menu_about -> {
-                    // Handle about click
                     showMessage("About")
                     true
                 }
                 R.id.menu_logout -> {
-                    // Handle logout click
                     auth.signOut()
-                    // Navigate to SigninActivity
                     startActivity(Intent(requireContext(), SigninActivity::class.java))
                     activity?.finish()
                     true
@@ -233,18 +231,13 @@ class ProfileFragment : Fragment() {
         popupMenu.show()
     }
 
-    private fun showMessage(message: String) {
-        view?.let {
-            Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
-        }
-    }
     private fun showCustomDialog(message: String, onYes: () -> Unit) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_custom, null)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
 
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent) // Remove default frame
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         val messageText = dialogView.findViewById<TextView>(R.id.dialogMessage)
         val btnYes = dialogView.findViewById<Button>(R.id.ButtonYes)
@@ -264,10 +257,14 @@ class ProfileFragment : Fragment() {
         dialog.show()
     }
 
-
+    private fun showMessage(message: String) {
+        view?.let {
+            Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // prevent memory leaks
+        _binding = null
     }
 }

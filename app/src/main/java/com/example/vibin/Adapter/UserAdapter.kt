@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.UserProfileActivity
 import com.example.vibin.R
-import com.example.vibin.Adapter.User
+import com.example.vibin.models.User
 import com.example.vibin.databinding.ItemUserBinding
 
 class UserAdapter(private val users: List<User>) :

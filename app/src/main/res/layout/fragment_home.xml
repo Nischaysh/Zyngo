@@ -5,183 +5,203 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context=".Fragment.HomeFragment">
-    <LinearLayout
+
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Explore"
-                    android:layout_margin="8dp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/NotificationButton"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_margin="12dp"
-                    android:src="@drawable/notification_bell"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/text_primary" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginHorizontal="5dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="?attr/colorPrimaryVariant">
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Explore"
+                        android:layout_margin="8dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/NotificationButton"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_margin="12dp"
+                        android:src="@drawable/notification_bell"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/text_primary" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="5dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?attr/colorPrimaryVariant">
 
                 <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:paddingHorizontal="20dp"
-                    android:paddingTop="15dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical|center_horizontal"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="7dp"
-                        android:background="@drawable/circule_bg"
+                        android:layout_width="match_parent"
+                        android:paddingHorizontal="20dp"
+                        android:paddingTop="15dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical|center_horizontal"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/profileicon"
-                            android:layout_width="80dp"
-                            android:scaleType="centerCrop"
-                            android:padding="2dp"
-                            app:shapeAppearanceOverlay="@style/CircleImageView"
-                            android:layout_height="80dp"
-                            android:src="@drawable/man" />
-                    </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="7dp"
+                            android:background="@drawable/circule_bg"
+                            android:layout_height="wrap_content">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/usernameLayout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Write something"
-                        app:boxCornerRadiusBottomEnd="24dp"
-                        app:boxCornerRadiusBottomStart="24dp"
-                        app:boxCornerRadiusTopEnd="24dp"
-                        app:boxCornerRadiusTopStart="24dp"
-                        app:boxStrokeColor="@color/text_input_stroke_color"
-                        app:hintTextColor="@color/text_secondary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/titleText">
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/profileicon"
+                                android:layout_width="80dp"
+                                android:scaleType="centerCrop"
+                                android:padding="2dp"
+                                app:shapeAppearanceOverlay="@style/CircleImageView"
+                                android:layout_height="80dp"
+                                android:src="@drawable/man" />
+                        </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/usernameEditText"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/usernameLayout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:padding="16dp"
-                            android:textColor="@color/text_primary" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:hint="Write something"
+                            app:boxCornerRadiusBottomEnd="24dp"
+                            app:boxCornerRadiusBottomStart="24dp"
+                            app:boxCornerRadiusTopEnd="24dp"
+                            app:boxCornerRadiusTopStart="24dp"
+                            app:boxStrokeColor="@color/text_input_stroke_color"
+                            app:hintTextColor="@color/text_secondary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/titleText">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/usernameEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:padding="16dp"
+                                android:textColor="@color/text_primary" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical|end"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imageButton3"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            app:tint="@color/primary"
+                            android:layout_margin="2dp"
+                            android:src="@drawable/camera" />
+
+                        <ImageView
+                            android:id="@+id/btnpicimage"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            app:tint="@color/primary"
+                            android:layout_margin="10dp"
+                            android:src="@drawable/upload_image" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Create post"
+                            android:textColor="@color/white"
+                            app:icon="@drawable/paper_plane"
+                            app:iconGravity="textStart"
+                            app:iconPadding="8dp"
+                            app:iconTint="@color/white" />
+                    </LinearLayout>
 
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:paddingHorizontal="20dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingBottom="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical|end"
-                    android:layout_height="wrap_content">
+            </com.google.android.material.card.MaterialCardView>
 
-                    <ImageView
-                        android:id="@+id/imageButton3"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        app:tint="@color/primary"
-                        android:layout_margin="2dp"
-                        android:src="@drawable/camera" />
-
-                    <ImageView
-                        android:id="@+id/imageButton4"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        app:tint="@color/primary"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/upload_image" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Create post"
-                        android:textColor="@color/white"
-                        app:icon="@drawable/paper_plane"
-                        app:iconGravity="textStart"
-                        app:iconPadding="8dp"
-                        app:iconTint="@color/white"/>
-                </LinearLayout>
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Find friends"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/HideText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hide"
+                    android:textColor="@color/primary"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:textSize="16sp"/>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/userRecycleview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Find friends"
-                android:textColor="@color/text_primary"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="15dp"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/HideText"
-                android:layout_width="wrap_content"
+                android:clipToPadding="false"
+                android:paddingHorizontal="5dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/postRecycleview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hide"
-                android:textColor="@color/primary"
-                android:gravity="end"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="15dp"
-                android:textSize="16sp"/>
+                android:padding="5dp"
+                />
+
+
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/userRecycleview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:paddingHorizontal="5dp"/>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

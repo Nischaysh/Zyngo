@@ -1,4 +1,4 @@
-package com.example.vibin.Adapter
+package com.example.vibin.models
 
 data class User(
     val uid: String = "",

@@ -58,6 +58,11 @@ dependencies {
     implementation(libs.firebase.firestore)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
+    implementation ("com.github.yalantis:ucrop:2.2.8")
+
+
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
