@@ -1,5 +1,6 @@
 package com.example.vibin.Fragment
 
+import Post
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,9 +16,9 @@ import com.example.vibin.models.User
 import com.example.vibin.Adapter.UserAdapter
 import com.example.vibin.BottomSheet.NotificationBottomSheet
 import com.example.vibin.databinding.FragmentHomeBinding
-import com.example.vibin.models.Post
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -68,6 +69,10 @@ class HomeFragment : Fragment() {
                 binding.HideText.text = "Show"
             }
         }
+        binding.btnPost.setOnClickListener {
+            savePost()
+        }
+
 
         binding.NotificationButton.setOnClickListener {
             val bottomsheet = NotificationBottomSheet()
@@ -131,17 +136,26 @@ class HomeFragment : Fragment() {
                     val text = document.getString("text")
                     val userId = document.getString("userId")
                     val imageUrl = document.getString("imageUrl")
+                    val timestamp = document.getTimestamp("timestamp")
+                    val likes = document.getLong("likes")?.toInt() ?: 0
+                    val likedBy = document.get("likedBy") as? List<String> ?: emptyList()
+
                     Post(
-                        userId =  userId ?: "",
+                        postId = document.id,
+                        userId = userId ?: "",
                         text = text ?: "",
                         userName = userName ?: "",
-                        imageUrl = imageUrl ?: ""
+                        imageUrl = imageUrl ?: "",
+                        timestamp = timestamp,
+                        likes = likes,
+                        likedBy = likedBy
                     )
                 }
+
                 if (postList.isEmpty()) {
                     showMessage("No post found in the list")
                 } else {
-                    postAdapter = PostAdapter(postList)
+                    postAdapter = PostAdapter(postList.toMutableList())
                     binding.postRecycleview.adapter = postAdapter
                 }
             }
@@ -186,6 +200,36 @@ class HomeFragment : Fragment() {
             .error(R.drawable.ic_default_user)
             .circleCrop()
             .into(profileImage)
+    }
+
+    private fun savePost() {
+        val uid = FirebaseAuth.getInstance().uid ?: return
+
+        val userDocRef = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(uid)
+
+        userDocRef.get()
+            .addOnSuccessListener { document ->
+                val userName = document.getString("username") ?: "Unknown"
+
+                val post = Post(
+                    userId = uid,
+                    userName = userName,
+                    text = binding.etCaption.text.toString(),
+                    imageUrl = null,
+                    timestamp = Timestamp.now()
+                )
+
+                FirebaseFirestore.getInstance().collection("posts")
+                    .add(post)
+                    .addOnSuccessListener {
+                        showMessage("Posted")
+                    }
+            }
+            .addOnFailureListener {
+                showMessage("Failed to fetch user data.")
+            }
     }
 
     private fun showMessage(message: String) {

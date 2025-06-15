@@ -207,7 +207,7 @@
 
             <!-- Posts Grid -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/postsGrid"
+                android:id="@+id/recyclerUserPosts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

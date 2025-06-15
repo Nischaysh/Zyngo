@@ -1,5 +1,6 @@
 package com.example.vibin.Fragment
 
+import Post
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -16,8 +17,10 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.SigninActivity
+import com.example.vibin.Adapter.PostAdapter
 import com.example.vibin.BottomSheet.UpdateProfileBottomSheet
 import com.example.vibin.R
 import com.example.vibin.databinding.FragmentProfileBinding
@@ -25,6 +28,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.yalantis.ucrop.UCrop
@@ -39,6 +43,8 @@ class ProfileFragment : Fragment() {
     private lateinit var menuButton: ImageButton
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var postAdapter: PostAdapter
+    private val userPosts = mutableListOf<Post>()
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef: StorageReference
 
@@ -90,6 +96,33 @@ class ProfileFragment : Fragment() {
             val bottomSheet = UpdateProfileBottomSheet()
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         }
+
+        postAdapter = PostAdapter(userPosts)
+        binding.recyclerUserPosts.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerUserPosts.adapter = postAdapter
+
+        loadUserPosts()
+    }
+
+    private fun loadUserPosts() {
+        val currentUserId = auth.currentUser?.uid ?: return
+
+        db.collection("posts")
+            .whereEqualTo("userId", currentUserId)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshots, error ->
+                if (error != null) {
+                    // handle error
+                    return@addSnapshotListener
+                }
+
+                userPosts.clear()
+                for (doc in snapshots!!) {
+                    val post = doc.toObject(Post::class.java).copy(postId = doc.id) // make sure postId is set
+                    userPosts.add(post)
+                }
+                postAdapter.notifyDataSetChanged()
+            }
     }
 
     private fun openGallery() {

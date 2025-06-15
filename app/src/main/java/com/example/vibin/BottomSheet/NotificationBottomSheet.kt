@@ -27,6 +27,27 @@ class NotificationBottomSheet : BottomSheetDialogFragment() {
         super.onCreate(savedInstanceState)
 
     }
+    override fun onStart() {
+        super.onStart()
+        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.let {
+            val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(it)
+
+            // Set full height of dialog
+            it.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+
+            // 40% of screen height
+            val screenHeight = resources.displayMetrics.heightPixels
+            behavior.peekHeight = (screenHeight * 0.4).toInt()
+
+            // Allow dragging to full
+            behavior.isFitToContents = false
+            behavior.expandedOffset = 0
+            behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

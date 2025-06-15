@@ -1,5 +1,6 @@
 package com.example.vibin.Activity
 
+import Post
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,7 +15,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.vibin.R
 import com.example.vibin.databinding.ActivityCreatePostBinding
-import com.example.vibin.models.Post
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
