@@ -81,6 +81,8 @@ class ProfileFragment : Fragment() {
         menuButton = view.findViewById(R.id.menuButton)
 
         fetchUserData()
+        loadPostCount()
+        loadUserPosts()
 
         editProfileImageButton.setOnClickListener {
             showCustomDialog("Wanna upload profile pic?") {
@@ -101,7 +103,7 @@ class ProfileFragment : Fragment() {
         binding.recyclerUserPosts.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerUserPosts.adapter = postAdapter
 
-        loadUserPosts()
+
     }
 
     private fun loadUserPosts() {
@@ -295,6 +297,25 @@ class ProfileFragment : Fragment() {
             Snackbar.make(it, message, Snackbar.LENGTH_SHORT).show()
         }
     }
+
+    private fun loadPostCount() {
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("posts")
+            .whereEqualTo("userId", currentUserId)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val postCount = snapshot.size()
+                binding.postsCount.text = postCount.toString()
+            }
+            .addOnFailureListener { e ->
+                binding.postsCount.text = "0"
+            }
+    }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

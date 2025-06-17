@@ -37,16 +37,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Create Post"
-            android:textAlignment="center"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:id="@+id/toolbarUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create post"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPost"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Post"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="18dp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -67,7 +87,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etCaptionlayput"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Write something"
@@ -89,22 +109,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="Pic Image"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     android:textSize="16sp"
-                    app:backgroundTint="@color/primary"
                     app:cornerRadius="18dp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPost"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:text="Post"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:backgroundTint="@color/primary"
-                    app:cornerRadius="18dp" />
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

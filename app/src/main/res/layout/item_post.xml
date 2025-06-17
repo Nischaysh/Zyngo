@@ -91,12 +91,19 @@
             android:layout_width="27dp"
             android:layout_height="27dp"
             app:tint="@color/text_secondary"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="10dp"
             app:srcCompat="@drawable/message" />
 
+        <TextView
+            android:id="@+id/tvCommentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/text_secondary" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/ivMenu"
             android:layout_width="27dp"
             android:layout_height="27dp"
             app:tint="@color/text_secondary"

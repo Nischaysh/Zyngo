@@ -70,7 +70,17 @@ class HomeFragment : Fragment() {
             }
         }
         binding.btnPost.setOnClickListener {
-            savePost()
+            val text = binding.etCaption.text.toString().trim()
+            val textLayout = binding.usernameLayout
+
+            if(text.isEmpty()){
+                textLayout.error = "Please Write Something"
+            }
+            else{
+                textLayout.error = null
+                savePost()
+            }
+
         }
 
 
@@ -225,6 +235,7 @@ class HomeFragment : Fragment() {
                     .add(post)
                     .addOnSuccessListener {
                         showMessage("Posted")
+                        binding.etCaption.text?.clear()
                     }
             }
             .addOnFailureListener {

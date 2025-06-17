@@ -1,19 +1,26 @@
 package com.example.vibin.Activity
 
+import Post
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.vibin.Adapter.PostAdapter
 import com.example.vibin.R
 import com.example.vibin.databinding.ActivityUserProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlin.toString
 
 class UserProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserProfileBinding
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var postAdapter: PostAdapter
+    private val userPosts = mutableListOf<Post>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +32,13 @@ class UserProfileActivity : AppCompatActivity() {
 
         // Get the user ID passed from the previous activity
         val targetUserId = intent.getStringExtra("userId")
+        loadUserPosts(targetUserId.toString())
         loadUserData(targetUserId.toString())
         checkFollow(currentUserId.toString(),targetUserId.toString())
+
+        postAdapter = PostAdapter(userPosts)
+        binding.recyclerUserPosts.layoutManager = LinearLayoutManager(this)
+        binding.recyclerUserPosts.adapter = postAdapter
 
         binding.followButton.setOnClickListener {
             if(binding.followButton.text == "FOLLOW"){
@@ -134,6 +146,27 @@ class UserProfileActivity : AppCompatActivity() {
                     binding.followersCount.text = followers.toString()
                     binding.followingCount.text = following.toString()
                 }
+            }
+    }
+
+    private fun loadUserPosts(targetuserid : String) {
+        val currentUserId = targetuserid
+
+        db.collection("posts")
+            .whereEqualTo("userId", currentUserId)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshots, error ->
+                if (error != null) {
+                    // handle error
+                    return@addSnapshotListener
+                }
+
+                userPosts.clear()
+                for (doc in snapshots!!) {
+                    val post = doc.toObject(Post::class.java).copy(postId = doc.id) // make sure postId is set
+                    userPosts.add(post)
+                }
+                postAdapter.notifyDataSetChanged()
             }
     }
 

@@ -41,6 +41,9 @@ class SigninActivity : AppCompatActivity() {
         binding.signInButton.setOnClickListener {
             handleEmailPasswordAuth()
         }
+        binding.googleSignInButton.setOnClickListener {
+            Toast.makeText(this, "Not Available", Toast.LENGTH_SHORT).show()
+        }
 
         binding.logoImageView.setOnClickListener {
             val bottomSheet = MyBottomSheet()

@@ -1,11 +1,15 @@
 package com.example.vibin.Adapter
 
 import Post
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,7 +33,9 @@ class PostAdapter(private val postList: MutableList<Post>) :
         val userProfileImage: ImageView = view.findViewById(R.id.userProfileImage)
         val ivLike: ImageView = view.findViewById(R.id.ivLike)
         val ivComment: ImageView = view.findViewById(R.id.ivComment)
+        val ivMenu: ImageView = view.findViewById(R.id.ivMenu)
         val tvLikeCount: TextView = view.findViewById(R.id.tvLikeCount)
+        val tvCommentCount: TextView = view.findViewById(R.id.tvCommentCount)
         val tvTimestamp: TextView = view.findViewById(R.id.tvTimestamp)
     }
 
@@ -46,10 +52,53 @@ class PostAdapter(private val postList: MutableList<Post>) :
         holder.tvPostText.text = post.text
         holder.tvLikeCount.text = "${post.likes}"
 
+        db.collection("posts").document(post.postId)
+            .collection("comments")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if(snapshot.size() == 0 ){
+                    val count = ""
+                    holder.tvCommentCount.text = "$count"
+                }
+                else{
+                    val count  = snapshot.size()
+                    holder.tvCommentCount.text = "$count"
+                }
+
+
+            }
+            .addOnFailureListener {
+                holder.tvCommentCount.text = ""
+            }
+
+
         holder.ivComment.setOnClickListener {
             val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
             val commentSheet = CommentBottomSheet(post.postId)
             commentSheet.show(fragmentManager, commentSheet.tag)
+        }
+        holder.ivMenu.setOnClickListener {
+            if(currentUserId == post.userId){
+                showCustomDialog(holder.itemView.context, " Want to delete this post?") {
+                    val  postId = post.postId
+
+                    db.collection("posts").document(postId)
+                        .delete()
+                        .addOnSuccessListener {
+                            Toast.makeText(holder.itemView.context, "Deleted", Toast.LENGTH_SHORT).show()
+                            postList.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, postList.size)
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(holder.itemView.context, "Some error", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            else {
+                Toast.makeText(holder.itemView.context, "Cannot edit someone post", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
 
@@ -119,7 +168,36 @@ class PostAdapter(private val postList: MutableList<Post>) :
         }
     }
 
+    fun showCustomDialog(context: Context, message: String, onYes: () -> Unit) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_custom, null)
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val messageText = dialogView.findViewById<TextView>(R.id.dialogMessage)
+        val btnYes = dialogView.findViewById<Button>(R.id.ButtonYes)
+        val btnNo = dialogView.findViewById<Button>(R.id.ButtonNo)
+
+        messageText.text = message
+
+        btnYes.setOnClickListener {
+            onYes()
+            dialog.dismiss()
+        }
+
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+
     override fun getItemCount(): Int = postList.size
+
+
 
     private fun getTimeAgo(timestamp: com.google.firebase.Timestamp): String {
         val postTime = timestamp.toDate().time

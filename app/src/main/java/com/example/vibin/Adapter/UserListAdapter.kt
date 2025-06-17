@@ -1,0 +1,35 @@
+package com.example.vibin.Adapter
+
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.vibin.databinding.ItemUserBinding
+import com.example.vibin.databinding.ItemUserFollowingBinding
+import com.example.vibin.models.User
+
+class UserListAdapter(private val users: List<User>) :
+    RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+
+    class UserViewHolder(val binding: ItemUserFollowingBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+        val binding = ItemUserFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UserViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        val user = users[position]
+        holder.binding.tvUserName.text = user.username
+
+
+
+        Glide.with(holder.itemView.context)
+            .load(user.profileImageUrl)
+            .circleCrop()
+            .into(holder.binding.ivUserProfile)
+    }
+
+    override fun getItemCount(): Int = users.size
+}
