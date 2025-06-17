@@ -131,6 +131,7 @@ class PostAdapter(private val postList: MutableList<Post>) :
         // Like button click
         holder.ivLike.setOnClickListener {
             val postRef = db.collection("posts").document(post.postId)
+            holder.ivLike.setImageResource(R.drawable.heart_liked)
 
             db.runTransaction { transaction ->
                 val snapshot = transaction.get(postRef)

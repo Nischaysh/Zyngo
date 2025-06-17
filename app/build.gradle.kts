@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    implementation ("com.google.firebase:firebase-database:20.3.0")
     implementation ("com.airbnb.android:lottie:6.5.2")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -56,9 +57,10 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.swiperefreshlayout)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-
     implementation ("com.github.yalantis:ucrop:2.2.8")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 
 
 

@@ -12,4 +12,5 @@
     <color name="surface">#FFFFFF</color>
     <color name="backgroundloading">#CBFFFFFF</color>
     <color name="background">#FFFFFF</color>
+    <color name="Transparent">#00FFFFFF</color>
 </resources>
