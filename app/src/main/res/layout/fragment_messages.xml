@@ -37,10 +37,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerUserPosts"
+        android:id="@+id/userPresenceRecycler"
         android:layout_width="match_parent"
-
         android:layout_height="0dp"
+        android:paddingHorizontal="10dp"
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
