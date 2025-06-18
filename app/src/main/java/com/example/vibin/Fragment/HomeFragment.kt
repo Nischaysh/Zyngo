@@ -1,7 +1,6 @@
 package com.example.vibin.Fragment
 
 import Post
-import android.R.attr.visibility
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.CreatePostActivity
 import com.example.vibin.Adapter.PostAdapter
-import com.example.vibin.Adapter.ShimmerAdapter
+import com.example.vibin.Adapter.PostShimmerAdapter
 import com.example.vibin.R
 import com.example.vibin.models.User
 import com.example.vibin.Adapter.UserAdapter
@@ -34,7 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var userAdapter: UserAdapter
     private lateinit var postAdapter: PostAdapter
-    private lateinit var shimmerAdapter: ShimmerAdapter
+    private lateinit var shimmerAdapter: PostShimmerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         auth = FirebaseAuth.getInstance()
@@ -101,7 +100,7 @@ class HomeFragment : Fragment() {
     private fun startShimmer() {
         binding.shimmerRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            shimmerAdapter = ShimmerAdapter(5)
+            shimmerAdapter = PostShimmerAdapter(5)
             adapter = shimmerAdapter
             visibility = View.VISIBLE
         }

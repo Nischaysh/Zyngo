@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vibin.R
 
-class ShimmerAdapter(private val itemCount: Int) :
-    RecyclerView.Adapter<ShimmerAdapter.ShimmerViewHolder>() {
+class PresenceShimmerAdapter(private val itemCount: Int) :
+    RecyclerView.Adapter<PresenceShimmerAdapter.ShimmerViewHolder>() {
 
     inner class ShimmerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShimmerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post_shimmer, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_presence_shimmer, parent, false)
         return ShimmerViewHolder(view)
     }
 

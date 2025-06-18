@@ -18,11 +18,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.vibin.Activity.SigninActivity
 import com.example.vibin.Adapter.PostAdapter
-import com.example.vibin.Adapter.ShimmerAdapter
+import com.example.vibin.Adapter.PostShimmerAdapter
 import com.example.vibin.BottomSheet.UpdateProfileBottomSheet
 import com.example.vibin.R
 import com.example.vibin.databinding.FragmentProfileBinding
@@ -48,7 +47,7 @@ class ProfileFragment : Fragment() {
     private lateinit var postAdapter: PostAdapter
     private val userPosts = mutableListOf<Post>()
     private lateinit var storage: FirebaseStorage
-    private lateinit var shimmerAdapter: ShimmerAdapter
+    private lateinit var shimmerAdapter: PostShimmerAdapter
     private lateinit var storageRef: StorageReference
 
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -113,7 +112,7 @@ class ProfileFragment : Fragment() {
     private fun startShimmer() {
         binding.shimmerRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            shimmerAdapter = ShimmerAdapter(5)
+            shimmerAdapter = PostShimmerAdapter(5)
             adapter = shimmerAdapter
             visibility = View.VISIBLE
         }
