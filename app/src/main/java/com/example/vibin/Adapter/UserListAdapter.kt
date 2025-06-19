@@ -1,15 +1,18 @@
 package com.example.vibin.Adapter
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.vibin.Activity.ChatActivity
 import com.example.vibin.databinding.ItemUserBinding
 import com.example.vibin.databinding.ItemUserFollowingBinding
 import com.example.vibin.models.User
 
-class UserListAdapter(private val users: List<User>) :
+class UserListAdapter(private val context: Context,private val users: List<User>) :
     RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     class UserViewHolder(val binding: ItemUserFollowingBinding) : RecyclerView.ViewHolder(binding.root)
@@ -22,9 +25,10 @@ class UserListAdapter(private val users: List<User>) :
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
         holder.binding.tvUserName.text = user.username
-
-
-
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ChatActivity::class.java)
+            context.startActivity(intent)
+        }
         Glide.with(holder.itemView.context)
             .load(user.profileImageUrl)
             .circleCrop()

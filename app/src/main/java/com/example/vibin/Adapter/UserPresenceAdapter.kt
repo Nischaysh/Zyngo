@@ -25,6 +25,8 @@ class UserPresenceAdapter(private val users: List<User>) :
         val user = users[position]
         val context = holder.itemView.context
 
+        holder.binding.tvUserName.text = user.username
+
         // Load profile image
         Glide.with(context)
             .load(user.profileImageUrl)

@@ -26,5 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerFollowingShimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

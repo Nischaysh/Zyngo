@@ -1,5 +1,6 @@
 package com.example.vibin.BottomSheet
 
+import android.R.attr.visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vibin.Adapter.PresenceShimmerAdapter
 import com.example.vibin.Adapter.UserListAdapter
+import com.example.vibin.Adapter.UserListShimmerAdapter
 import com.example.vibin.R
 import com.example.vibin.databinding.ChatUserBottomSheetBinding
 import com.example.vibin.databinding.NotificationBottomSheetBinding
@@ -29,6 +32,7 @@ class ChatUserBottomSHeet : BottomSheetDialogFragment() {
     private lateinit var adapter: UserListAdapter
     private val userList = mutableListOf<User>()
     override fun getTheme(): Int = R.style.TransparentBottomSheetDialog
+    private lateinit var userListShimmerAdapter: UserListShimmerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +62,12 @@ class ChatUserBottomSHeet : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = UserListAdapter(userList)
+        adapter = UserListAdapter( requireContext(), userList)
         binding.recyclerFollowing.layoutManager = LinearLayoutManager(context)
         binding.recyclerFollowing.adapter = adapter
 
         loadFollowingUsers()
+        startShimmer()
     }
 
     override fun onCreateView(
@@ -73,8 +78,22 @@ class ChatUserBottomSHeet : BottomSheetDialogFragment() {
         _binding = ChatUserBottomSheetBinding.inflate(inflater, container, false)
 
         return binding.root
+
     }
 
+    private fun startShimmer() {
+        binding.recyclerFollowingShimmer.apply {
+            layoutManager = LinearLayoutManager(context,)
+            userListShimmerAdapter = UserListShimmerAdapter(15)
+            adapter = userListShimmerAdapter
+            visibility = View.VISIBLE
+        }
+        binding.recyclerFollowing.visibility = View.GONE
+    }
+    private fun stopShimmer() {
+        binding.recyclerFollowingShimmer.visibility = View.GONE
+        binding.recyclerFollowing.visibility = View.VISIBLE
+    }
     private fun loadFollowingUsers() {
         val currentUserId = auth.currentUser?.uid ?: return
 
@@ -97,6 +116,7 @@ class ChatUserBottomSHeet : BottomSheetDialogFragment() {
                             userList.add(user)
                         }
                         adapter.notifyDataSetChanged()
+                        stopShimmer()
                     }
             }
     }

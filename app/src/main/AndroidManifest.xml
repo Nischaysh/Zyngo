@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Vibin"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".BottomSheet.ChatUserBottomSHeet"
             android:exported="false" />
         <activity
