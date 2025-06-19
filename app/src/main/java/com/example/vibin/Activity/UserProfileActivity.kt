@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import kotlin.toString
 
 class UserProfileActivity : AppCompatActivity() {
@@ -112,6 +113,26 @@ class UserProfileActivity : AppCompatActivity() {
             db.collection("users").document(currentUserId)
                 .update("followingCount", FieldValue.increment(-1))
         }
+    }
+    private fun setUserPresence(status: String) {
+        val uid = FirebaseAuth.getInstance().uid ?: return
+        val presenceRef = FirebaseFirestore.getInstance().collection("users").document(uid)
+
+        val data = hashMapOf(
+            "status" to status,
+            "lastSeen" to System.currentTimeMillis()
+        )
+
+        presenceRef.set(data, SetOptions.merge())
+    }
+    override fun onStart() {
+        super.onStart()
+        setUserPresence("online")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        setUserPresence("offline")
     }
 
     private fun loadUserData(userId: String) {

@@ -9,6 +9,7 @@
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#757575</color>
     <color name="divider">#DDDDDD</color>
+    <color name="green">#00ff00</color>
     <color name="surface">#FFFFFF</color>
     <color name="backgroundloading">#CBFFFFFF</color>
     <color name="background">#FFFFFF</color>

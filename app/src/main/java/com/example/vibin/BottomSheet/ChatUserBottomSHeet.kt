@@ -113,6 +113,7 @@ class ChatUserBottomSHeet : BottomSheetDialogFragment() {
                         userList.clear()
                         for (doc in userDocs) {
                             val user = doc.toObject(User::class.java)
+                            user.uid = doc.id
                             userList.add(user)
                         }
                         adapter.notifyDataSetChanged()

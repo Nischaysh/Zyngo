@@ -18,18 +18,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/CircleImageView" />
 
-    <View
+    <LinearLayout
         android:id="@+id/greendot"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:background="@drawable/green_dot"
-        android:translationZ="2dp"
+        android:background="@drawable/dialog_background"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/ivUserProfile"
         app:layout_constraintEnd_toEndOf="@+id/ivUserProfile"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="@+id/ivUserProfile"
         app:layout_constraintTop_toTopOf="@+id/ivUserProfile"
-        app:layout_constraintVertical_bias="0.91" />
+        app:layout_constraintVertical_bias="0.931">
+
+    <View
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:background="@drawable/green_dot">
+
+    </View>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvUserName"

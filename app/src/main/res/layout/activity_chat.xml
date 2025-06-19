@@ -23,11 +23,10 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileImage"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:layout_marginEnd="15dp"
                 android:padding="3dp"
-                android:tint="@color/black"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_default_user"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +42,6 @@
                     android:id="@+id/tvUsername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nischay_yy"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -70,9 +68,18 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/card"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout2"
+        />
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
@@ -111,6 +118,7 @@
                 app:tint="@color/primary" />
 
             <ImageView
+                android:id="@+id/sendMessage"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginEnd="15dp"
