@@ -1,6 +1,7 @@
 package com.example.vibin.Activity
 
 import Post
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -56,8 +57,11 @@ class UserProfileActivity : AppCompatActivity() {
 
         // Set up back button
         binding.backButton.setOnClickListener { finish() }
-        binding.messageTopButton.setOnClickListener { /* TODO: Message action */ }
-        binding.messageButton.setOnClickListener { /* TODO: Message action */ }
+        binding.messageButton.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra("otherUserId", targetUserId)
+            startActivity(intent)
+        }
     }
 
     private fun checkFollow(currentUserId : String , targetUserId : String){
@@ -114,26 +118,7 @@ class UserProfileActivity : AppCompatActivity() {
                 .update("followingCount", FieldValue.increment(-1))
         }
     }
-    private fun setUserPresence(status: String) {
-        val uid = FirebaseAuth.getInstance().uid ?: return
-        val presenceRef = FirebaseFirestore.getInstance().collection("users").document(uid)
 
-        val data = hashMapOf(
-            "status" to status,
-            "lastSeen" to System.currentTimeMillis()
-        )
-
-        presenceRef.set(data, SetOptions.merge())
-    }
-    override fun onStart() {
-        super.onStart()
-        setUserPresence("online")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        setUserPresence("offline")
-    }
 
     private fun loadUserData(userId: String) {
         db.collection("users")

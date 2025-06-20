@@ -1,21 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="end">
+    android:paddingBottom="3dp">
 
-    <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/textMessage"
+    <LinearLayout
+        android:id="@+id/messageContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_sent"
-        android:padding="10dp"
-        android:textColor="@color/white"
-        android:layout_gravity="end"
-        android:layout_margin="8dp" />
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="7dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvtextMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/tvtextTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:alpha="0.7" />
+
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="15sp"
+                android:layout_height="15sp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginStart="3dp"
+                app:tint="@color/white"
+                android:alpha="0.7"
+                app:srcCompat="@drawable/read" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

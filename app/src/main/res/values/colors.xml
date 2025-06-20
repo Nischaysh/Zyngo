@@ -14,4 +14,5 @@
     <color name="backgroundloading">#CBFFFFFF</color>
     <color name="background">#FFFFFF</color>
     <color name="Transparent">#00FFFFFF</color>
+    <color name="blue">#34B7F1</color>
 </resources>
