@@ -5,6 +5,7 @@ import ChatMessage
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -66,6 +67,11 @@ class ChatActivity : AppCompatActivity() {
                 putExtra("userId", otherUserId)
             })
         }
+         val back  = findViewById<ImageButton>(R.id.menuButton)
+        back.setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun loadUserData(otherUserId: String) {
@@ -141,6 +147,28 @@ class ChatActivity : AppCompatActivity() {
             .collection("messages")
             .document(messageId)
             .set(message)
+
+        val recentChat = mapOf(
+            "userId" to otherUserId,
+            "lastMessage" to text,
+            "timestamp" to message.timestamp
+        )
+        val reverseRecentChat = mapOf(
+            "userId" to currentUserId,
+            "lastMessage" to text,
+            "timestamp" to message.timestamp
+        )
+
+        db.collection("users").document(currentUserId)
+            .collection("recentChats")
+            .document(otherUserId)
+            .set(recentChat)
+
+        db.collection("users").document(otherUserId)
+            .collection("recentChats")
+            .document(currentUserId)
+            .set(reverseRecentChat)
+
 
         input.setText("")
     }

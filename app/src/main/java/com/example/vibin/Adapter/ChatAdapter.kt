@@ -70,6 +70,7 @@ class ChatAdapter(
             }else{
                 messageText.text = message.message
                 messageText.setTextColor(color)
+                messageText.setTypeface(null, Typeface.NORMAL)
             }
 
             // Change status color
@@ -110,6 +111,7 @@ class ChatAdapter(
             }else{
                 messageText.text = message.message
                 messageText.setTextColor(color)
+                messageText.setTypeface(null, Typeface.NORMAL)
             }
         }
     }

@@ -73,11 +73,11 @@ class SigninActivity : AppCompatActivity() {
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailLayout.error = "Invalid format"
         } else {
+            binding.Loadingscreen.visibility = View.VISIBLE
             // Try to sign in
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { signInTask ->
                     if (signInTask.isSuccessful) {
-                        binding.Loadingscreen.visibility = View.VISIBLE
                         val userId = auth.currentUser?.uid
                         if (userId != null) {
                             db.collection("users").document(userId)
