@@ -59,14 +59,17 @@ class ChatAdapter(
             val timeText = itemView.findViewById<TextView>(R.id.tvtextTime)
             val statusView = itemView.findViewById<ImageView>(R.id.status)
             val messageContainer = itemView.findViewById<LinearLayout>(R.id.messageContainer)
+            val color  = ContextCompat.getColor(messageText.context, R.color.white)
 
-            messageText.text = message.message
             timeText.text = formatTimestamp(message.timestamp)
 
-            if (message.message == "This message was deleted") {
+            if (message.message == "#deleted") {
                 messageText.setTextColor(R.color.blue)
                 messageText.text = "This message was deleted!!"
                 messageText.setTypeface(null, Typeface.ITALIC)
+            }else{
+                messageText.text = message.message
+                messageText.setTextColor(color)
             }
 
             // Change status color
@@ -84,7 +87,7 @@ class ChatAdapter(
 
             // Delete logic
             messageContainer.setOnLongClickListener {
-                if (message.senderId == currentUserId && message.message != "This message was deleted") {
+                if (message.senderId == currentUserId && message.message != "#deleted") {
                     showCustomDialog(itemView.context, "Want to delete this message?") {
                         deleteMessageText(message.messageId, message.receiverId)
                     }
@@ -98,12 +101,15 @@ class ChatAdapter(
         fun bind(message: ChatMessage) {
             val messageText = itemView.findViewById<TextView>(R.id.tvtextMessage)
             val timeText = itemView.findViewById<TextView>(R.id.tvtextTime)
-            messageText.text = message.message
             timeText.text = formatTimestamp(message.timestamp)
-            if (message.message == "This message was deleted") {
+            val color  = ContextCompat.getColor(messageText.context, R.color.text_primary)
+            if (message.message == "#deleted") {
                 messageText.setTextColor(Color.GRAY)
                 messageText.text = "This message was deleted!!"
                 messageText.setTypeface(null, Typeface.ITALIC)
+            }else{
+                messageText.text = message.message
+                messageText.setTextColor(color)
             }
         }
     }
@@ -121,7 +127,7 @@ class ChatAdapter(
             "$receiverId-$currentUserId"
 
         val updates = mapOf(
-            "message" to "This message was deleted"
+            "message" to "#deleted"
         )
 
         FirebaseFirestore.getInstance()
