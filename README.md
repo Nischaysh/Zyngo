@@ -37,13 +37,6 @@
 - Following is stored in Firestore under each user's data.
 - Explore screen shows all registered users with follow option.
 
-### 🔄 Stories (Status) Feature
-- Like WhatsApp stories or Instagram stories:
-  - Upload temporary photo stories
-  - Stories expire after 24 hours
-- Users can view stories of people they follow.
-- Real-time story updates with smooth UI.
-
 ### 📩 Notifications Tab (Coming Soon)
 - A section to show all activity related to the user:
   - Who followed you
